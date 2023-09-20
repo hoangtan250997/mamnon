@@ -6,18 +6,18 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.math.BigDecimal;
 
 @Setter
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class DanhMucChiMamNonResultDTO {
-
-    private Long id;
-
+public class DanhMucChiNoiTruResultDTO {
+    private Integer id;
     private String name;
-
     private Integer code;
-
+    private Long amount;
+    private BigDecimal usdAmount;
+    private BigDecimal eurAmount;
 }
