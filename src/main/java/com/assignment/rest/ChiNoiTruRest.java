@@ -39,17 +39,5 @@ public class ChiNoiTruRest {
         return Response.ok(chiNoiTruService.findByMonthForAllCongDoan(month, year)).build();
     }
 
-    @GET
-    @Path("/check")
-    @Produces({MediaType.APPLICATION_JSON})
-    public Response check() {
-        return Response.ok(chiNoiTruService.check()).build();
-    }
 
-    @GET
-    @Path("/month")
-    @Produces({MediaType.APPLICATION_JSON})
-    public Response findByCongdoanAndMonth(@QueryParam("month") int month, @QueryParam("year") int year) {
-        return Response.ok(chiNoiTruService.findByMonth(month, year)).build();
-    }
 }

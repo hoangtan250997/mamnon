@@ -1,8 +1,6 @@
 package com.assignment.mapper;
 
 import com.assignment.entity.noitru.DanhMucChiNoiTru;
-import com.assignment.entity.thuchimamnon.DanhMucChiMamNon;
-import com.assignment.model.DanhMucChiMamNonDTO;
 import com.assignment.model.DanhMucChiNoiTruResultDTO;
 import org.mapstruct.Mapper;
 import org.mapstruct.NullValuePropertyMappingStrategy;

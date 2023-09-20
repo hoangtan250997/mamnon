@@ -5,17 +5,13 @@ import com.assignment.dao.ChiNoiTruDAO;
 import com.assignment.dao.DanhMucChiNoiTruDAO;
 import com.assignment.entity.noitru.ChiNoiTru;
 import com.assignment.entity.noitru.DanhMucChiNoiTru;
-import com.assignment.mapper.ChiNoiTruMapper;
-import com.assignment.mapper.ChiNoiTruResultMapper;
-import com.assignment.mapper.DanhMucChiNoiTruConvertMapper;
-import com.assignment.model.ChiNoiTruDTO;
-import com.assignment.model.ChiNoiTruResultDTO;
 import com.assignment.model.DanhMucChiNoiTruResultDTO;
 
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
 import java.math.BigDecimal;
-import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -28,68 +24,78 @@ public class ChiNoiTruService {
     ChiNoiTruDAO chiNoiTruDAO;
 
     @Inject
-    ChiNoiTruMapper chiNoiTruMapper;
-    @Inject
-    ChiNoiTruResultMapper chiNoiTruResultMapper;
-
-    @Inject
     DanhMucChiNoiTruDAO danhMucChiNoiTruDAO;
 
-    @Inject
-    DanhMucChiNoiTruConvertMapper danhMucChiNoiTruConvertMapper;
 
     public List<ChiNoiTru> findAll() {
-        List<ChiNoiTru> chiNoiTruList = chiNoiTruDAO.findAll();
-        return chiNoiTruList;
+        return chiNoiTruDAO.findAll();
+
     }
 
 
-    public List<ChiNoiTru> findByCongdoanAndMonth(int condoanId, int month, int year) {
-        List<ChiNoiTru> chiNoiTruList = chiNoiTruDAO.findByMonth(month, year).stream().filter(chiNoiTru -> chiNoiTru.getCongdoan().getId() == condoanId).collect(Collectors.toList());
-        List<DanhMucChiNoiTruResultDTO> danhMucChiNoiTruResultDTOList = new ArrayList<>();
-        for (Map.Entry<String, DanhMucChiNoiTru> danhMucChiNoiTru : createDanhMucChiNoiTru().entrySet()) {
-            DanhMucChiNoiTruResultDTO danhMucChiNoiTruResultDTO = DanhMucChiNoiTruResultDTO.builder()
-                    .id(danhMucChiNoiTru.getValue().getId())
-                    .name(danhMucChiNoiTru.getValue().getName())
-                    .code(danhMucChiNoiTru.getValue().getCode())
-                    .amount(chiNoiTruList.stream().filter(chiNoiTru -> chiNoiTru.getDanhMucChiNoiTru().getName().equals(danhMucChiNoiTru.getKey())).collect(Collectors.toList()).get(0).getAmount())
-                    .build();
+    public List<DanhMucChiNoiTruResultDTO> findByCongdoanAndMonth(int condoanId, int month, int year) {
 
+        List<ChiNoiTru> chiNoiTruList = chiNoiTruDAO.findByMonth(month, year)
+                .stream()
+                .filter(chiNoiTru -> chiNoiTru.getCongdoan().getId() == condoanId)
+                .collect(Collectors.toList());
+
+        Map<String, DanhMucChiNoiTruResultDTO> danhMucChiNoiTruMap = createDanhMucChiNoiTru();
+
+        for (ChiNoiTru chiNoiTru : chiNoiTruList) {
+            String key = chiNoiTru.getDanhMucChiNoiTru().getName();
+            danhMucChiNoiTruMap.get(key).setAmount(chiNoiTru.getAmount());
+            danhMucChiNoiTruMap.get(key).setUsdAmount(chiNoiTru.getUsdAmount());
+            danhMucChiNoiTruMap.get(key).setEurAmount(chiNoiTru.getEurAmount());
         }
 
-        return chiNoiTruList;
+        return danhMucChiNoiTruMap.values().stream().sorted(Comparator.comparing(DanhMucChiNoiTruResultDTO::getCode)).collect(Collectors.toList());
 
     }
 
-    public Map<String, DanhMucChiNoiTru> createDanhMucChiNoiTru() {
+    public List<DanhMucChiNoiTruResultDTO> findByMonthForAllCongDoan(int month, int year) {
+        List<ChiNoiTru> chiNoiTruList = chiNoiTruDAO.findByMonth(month, year)
+                .stream()
+                .collect(Collectors.toList());
+        Map<String, DanhMucChiNoiTruResultDTO> danhMucChiNoiTruMap = createDanhMucChiNoiTru();
+
+        for (Map.Entry<String, DanhMucChiNoiTruResultDTO> danhMucChiNoiTru : danhMucChiNoiTruMap.entrySet()) {
+            String key = danhMucChiNoiTru.getKey();
+            if (checkExisting(key, chiNoiTruList)) {
+                DanhMucChiNoiTruResultDTO danhMucResultDTO = danhMucChiNoiTru.getValue();
+
+                List<ChiNoiTru> chiNoiTruListMatchKey = chiNoiTruList.stream()
+                        .filter(chiNoiTru -> chiNoiTru.getDanhMucChiNoiTru().getName().equals(key)).collect(Collectors.toList());
+
+                danhMucResultDTO.setAmount(chiNoiTruListMatchKey.stream().mapToLong(ChiNoiTru::getAmount).sum());
+                danhMucResultDTO.setUsdAmount(chiNoiTruListMatchKey.stream().map(ChiNoiTru::getUsdAmount).reduce(BigDecimal.ZERO, BigDecimal::add));
+                danhMucResultDTO.setEurAmount(chiNoiTruListMatchKey.stream().map(ChiNoiTru::getEurAmount).reduce(BigDecimal.ZERO, BigDecimal::add));
+            }
+        }
+
+
+        return danhMucChiNoiTruMap.values().stream().sorted(Comparator.comparing(DanhMucChiNoiTruResultDTO::getCode)).collect(Collectors.toList());
+    }
+
+    public Map<String, DanhMucChiNoiTruResultDTO> createDanhMucChiNoiTru() {
         List<DanhMucChiNoiTru> danhMucChiNoiTruList = danhMucChiNoiTruDAO.findAll();
 
-        return danhMucChiNoiTruList.stream()
-                .collect(Collectors.toMap(DanhMucChiNoiTru::getName, dto -> dto));
-    }
+        Map<String, DanhMucChiNoiTruResultDTO> danhMucChiNoiTruResultDTOMap = new HashMap<>();
 
-
-    public List<ChiNoiTruDTO> findByMonth(int month, int year) {
-        List<ChiNoiTru> chiNoiTruList = chiNoiTruDAO.findByMonth(month, year);
-        return chiNoiTruMapper.toDTOList(chiNoiTruList);
-    }
-
-    public List<ChiNoiTruResultDTO> findByMonthForAllCongDoan(int month, int year) {
-        List<ChiNoiTruResultDTO> chiNoiTruResultDTOList = new ArrayList<>();
-        List<ChiNoiTru> chiNoiTruList = chiNoiTruDAO.findByMonth(month, year);
-        Map<DanhMucChiNoiTru, List<ChiNoiTru>> sumByCategory = chiNoiTruList.stream()
-                .collect(Collectors.groupingBy(
-                        ChiNoiTru::getDanhMucChiNoiTru
-                ));
-        for (Map.Entry<DanhMucChiNoiTru, List<ChiNoiTru>> danhMucChiNoiTru : sumByCategory.entrySet()) {
-            ChiNoiTruResultDTO chiNoiTruResultDTO = ChiNoiTruResultDTO.builder()
-                    .danhMucChiNoiTruName(danhMucChiNoiTru.getKey().getName())
-                    .amount(danhMucChiNoiTru.getValue().stream().mapToLong(value -> value.getAmount()).sum())
-                    .usdAmount(BigDecimal.valueOf(danhMucChiNoiTru.getValue().stream().mapToDouble(value -> value.getUsdAmount().doubleValue()).sum()))
+        for (DanhMucChiNoiTru danhMucChiNoiTru : danhMucChiNoiTruList) {
+            DanhMucChiNoiTruResultDTO danhMucChiNoiTruResultDTO = DanhMucChiNoiTruResultDTO.builder()
+                    .name(danhMucChiNoiTru.getName())
+                    .code(danhMucChiNoiTru.getCode())
                     .build();
-            chiNoiTruResultDTOList.add(chiNoiTruResultDTO);
+            danhMucChiNoiTruResultDTOMap.put(danhMucChiNoiTru.getName(), danhMucChiNoiTruResultDTO);
         }
-        return chiNoiTruResultDTOList;
+
+        return danhMucChiNoiTruResultDTOMap;
     }
+
+    public boolean checkExisting(String name, List<ChiNoiTru> chiNoiTruList) {
+        return chiNoiTruList.stream().anyMatch(chiNoiTru -> chiNoiTru.getDanhMucChiNoiTru().getName().equals(name));
+    }
+
 }
 

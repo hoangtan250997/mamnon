@@ -6,8 +6,6 @@ import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.NullValuePropertyMappingStrategy;
 
-import javax.enterprise.context.ApplicationScoped;
-
 
 @Mapper(componentModel = "cdi", nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
 public interface ChiNoiTruMapper extends BaseMapper<ChiNoiTru, ChiNoiTruDTO> {

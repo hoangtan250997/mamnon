@@ -1,6 +1,5 @@
 package com.assignment.mapper;
 
-import javax.enterprise.context.ApplicationScoped;
 import java.util.List;
 
 /**

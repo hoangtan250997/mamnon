@@ -2,18 +2,14 @@ package com.assignment.dao;
 
 import lombok.RequiredArgsConstructor;
 
-import javax.enterprise.context.ApplicationScoped;
-import javax.inject.Inject;
-import javax.inject.Singleton;
+import javax.enterprise.context.RequestScoped;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
-import javax.persistence.PersistenceUnit;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
 import java.util.List;
 import java.util.Optional;
-import javax.sql.DataSource;
 /**
  * Contract for a generic DAO.
  *
@@ -21,7 +17,7 @@ import javax.sql.DataSource;
  */
 
 @RequiredArgsConstructor
-@ApplicationScoped
+@RequestScoped
 public abstract class BaseDAO<E> {
 
     private final Class<E> entityClass;
