@@ -4,7 +4,7 @@ package com.assignment.service;
 import com.assignment.dao.DanhMucChiMamNonDAO;
 import com.assignment.entity.thuchimamnon.DanhMucChiMamNon;
 import com.assignment.mapper.DanhMucChiMamNonMapper;
-import com.assignment.model.DanhMucChiMamNonDTO;
+import com.assignment.model.DanhMucChiMamNonResultDTO;
 
 import javax.enterprise.context.RequestScoped;
 import javax.inject.Inject;
@@ -20,7 +20,7 @@ public class DanhMucChiMamNonService {
     @Inject
      DanhMucChiMamNonMapper danhMucChiMamNonMapper;
 
-    public List<DanhMucChiMamNonDTO> findAll() {
+    public List<DanhMucChiMamNonResultDTO> findAll() {
         List<DanhMucChiMamNon> danhMucChiMamNonList = danhMucChiMamNonDAO.findAll();
         return danhMucChiMamNonMapper.toDTOList(danhMucChiMamNonList);
     }

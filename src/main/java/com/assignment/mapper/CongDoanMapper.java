@@ -1,10 +1,10 @@
 package com.assignment.mapper;
 
-import com.assignment.entity.thuchimamnon.DanhMucChiMamNon;
-import com.assignment.model.DanhMucChiMamNonResultDTO;
+import com.assignment.entity.congdoan.CongDoan;
+import com.assignment.model.CongDoanDTO;
 import org.mapstruct.Mapper;
 import org.mapstruct.NullValuePropertyMappingStrategy;
 
 @Mapper(componentModel = "cdi", nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
-public interface DanhMucChiMamNonMapper extends BaseMapper<DanhMucChiMamNon, DanhMucChiMamNonResultDTO> {
+public interface CongDoanMapper extends BaseMapper<CongDoan, CongDoanDTO> {
 }

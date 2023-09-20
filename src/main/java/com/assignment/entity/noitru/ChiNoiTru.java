@@ -44,11 +44,10 @@ public class ChiNoiTru {
     @JoinColumn(name="dmchinoitru_id")
     private DanhMucChiNoiTru danhMucChiNoiTru;
 
-    @Column
+    @Column(name = "usd_amount")
     private BigDecimal usdAmount;
 
-    @Column
+    @Column(name = "eur_amount")
     private BigDecimal eurAmount;
-
 
 }

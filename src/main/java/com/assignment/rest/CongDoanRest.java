@@ -1,6 +1,7 @@
 package com.assignment.rest;
 
 
+import com.assignment.service.CongDoanService;
 import com.assignment.service.DanhMucChiMamNonService;
 
 import javax.inject.Inject;
@@ -10,15 +11,15 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
-@Path("/danh-muc-chi-mam-non")
-public class DanhMucChiMamNonRest {
+@Path("/cong-doan")
+public class CongDoanRest {
 
     @Inject
-    private DanhMucChiMamNonService danhMucChiMamNonService;
+    private CongDoanService congDoanService;
 
     @GET
     @Produces({MediaType.APPLICATION_JSON})
      public Response findAll() {
-        return Response.ok(danhMucChiMamNonService.findAll()).build();
+        return Response.ok(congDoanService.findAll()).build();
     }
 }

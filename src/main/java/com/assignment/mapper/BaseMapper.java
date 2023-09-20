@@ -1,5 +1,6 @@
 package com.assignment.mapper;
 
+import javax.enterprise.context.ApplicationScoped;
 import java.util.List;
 
 /**
@@ -8,7 +9,6 @@ import java.util.List;
  * @param <E> - Entity type parameter.
  * @param <D> - DTO type parameter.
  */
-
 public interface BaseMapper<E, D> {
 
     D toDTO(E entity);
