@@ -49,9 +49,9 @@ public class ThuNoiTruService {
                 List<ThuNoiTru> thuNoiTruListMatchKey = thuNoiTruList.stream()
                         .filter(thuNoiTru -> thuNoiTru.getDanhMucThuNoiTru().getName().equals(key)).collect(Collectors.toList());
 
-                danhMucResultDTO.setAmount(thuNoiTruListMatchKey.stream().allMatch(thuNoiTru -> thuNoiTru.getAmount() == null) ? null : thuNoiTruListMatchKey.stream().mapToLong(ThuNoiTru::getAmount).sum());
-                danhMucResultDTO.setUsdAmount(thuNoiTruListMatchKey.stream().allMatch(thuNoiTru -> thuNoiTru.getUsdAmount() == null) ? null : thuNoiTruListMatchKey.stream().map(ThuNoiTru::getUsdAmount).reduce(BigDecimal.ZERO, BigDecimal::add));
-                danhMucResultDTO.setEurAmount(thuNoiTruListMatchKey.stream().allMatch(thuNoiTru -> thuNoiTru.getEurAmount() == null) ? null : thuNoiTruListMatchKey.stream().map(ThuNoiTru::getEurAmount).reduce(BigDecimal.ZERO, BigDecimal::add));
+                danhMucResultDTO.setAmount(thuNoiTruListMatchKey.stream().allMatch(thuNoiTru -> thuNoiTru.getAmount() == null) ? 0L : thuNoiTruListMatchKey.stream().mapToLong(ThuNoiTru::getAmount).sum());
+                danhMucResultDTO.setUsdAmount(thuNoiTruListMatchKey.stream().allMatch(thuNoiTru -> thuNoiTru.getUsdAmount() == null) ? BigDecimal.valueOf(0) : thuNoiTruListMatchKey.stream().map(ThuNoiTru::getUsdAmount).reduce(BigDecimal.ZERO, BigDecimal::add));
+                danhMucResultDTO.setEurAmount(thuNoiTruListMatchKey.stream().allMatch(thuNoiTru -> thuNoiTru.getEurAmount() == null) ? BigDecimal.valueOf(0) : thuNoiTruListMatchKey.stream().map(ThuNoiTru::getEurAmount).reduce(BigDecimal.ZERO, BigDecimal::add));
             }
         }
 
@@ -67,6 +67,9 @@ public class ThuNoiTruService {
             DanhMucThuNoiTruResultDTO danhMucThuNoiTruResultDTO = DanhMucThuNoiTruResultDTO.builder()
                     .name(danhMucThuNoiTru.getName())
                     .code(danhMucThuNoiTru.getCode())
+                    .amount(0L)
+                    .usdAmount(BigDecimal.valueOf(0))
+                    .eurAmount(BigDecimal.valueOf(0))
                     .build();
             danhMucThuNoiTruResultDTOMap.put(danhMucThuNoiTru.getName(), danhMucThuNoiTruResultDTO);
         }

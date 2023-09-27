@@ -12,8 +12,6 @@ import org.mapstruct.NullValuePropertyMappingStrategy;
 public interface ChiNoiTruMapper extends BaseMapper<ChiNoiTru, ChiNoiTruDTO> {
 
     @Override
-//    @Mapping(target = "danhMucChiNoiTruId", source = "danhMucChiNoiTru.id")
-    @Mapping(target = "danhMucChiNoiTru.id", source = "danhMucChiNoiTruId")
-
+    @Mapping(target = "danhMucChiNoiTruId", source = "danhMucChiNoiTru.id")
     ChiNoiTruDTO toDTO(ChiNoiTru entity);
 }
