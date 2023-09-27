@@ -5,7 +5,9 @@ import com.assignment.dao.ChiNoiTruDAO;
 import com.assignment.dao.DanhMucChiNoiTruDAO;
 import com.assignment.entity.noitru.ChiNoiTru;
 import com.assignment.entity.noitru.DanhMucChiNoiTru;
+import com.assignment.mapper.DanhMucChiNoiTruConvertMapper;
 import com.assignment.model.DanhMucChiNoiTruResultDTO;
+import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.enterprise.context.RequestScoped;
 import jakarta.inject.Inject;
 
@@ -14,9 +16,10 @@ import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.function.Function;
 import java.util.stream.Collectors;
 
-@RequestScoped
+@ApplicationScoped
 public class ChiNoiTruService {
 
     @Inject
@@ -24,6 +27,9 @@ public class ChiNoiTruService {
 
     @Inject
     DanhMucChiNoiTruDAO danhMucChiNoiTruDAO;
+
+    @Inject
+    DanhMucChiNoiTruConvertMapper danhMucChiNoiTruConvertMapper;
 
 
     public List<ChiNoiTru> findAll() {
@@ -77,22 +83,27 @@ public class ChiNoiTruService {
     }
 
     public Map<String, DanhMucChiNoiTruResultDTO> createDanhMucChiNoiTru() {
-        List<DanhMucChiNoiTru> danhMucChiNoiTruList = danhMucChiNoiTruDAO.findAll();
+//        return danhMucChiNoiTruConvertMapper.toDTOList(danhMucChiNoiTruDAO.findAll())
+//                .stream()
+//                .collect(Collectors.groupingBy(danhMucChiNoiTru -> danhMucChiNoiTru.getName()));
+        return danhMucChiNoiTruConvertMapper.toDTOList(danhMucChiNoiTruDAO.findAll())
+                .stream()
+                .collect(Collectors.toMap(danhMucChiNoiTruResultDTO -> danhMucChiNoiTruResultDTO.getName(),
+                        Function.identity(),(e1,e2)->e1));
 
-        Map<String, DanhMucChiNoiTruResultDTO> danhMucChiNoiTruResultDTOMap = new HashMap<>();
+//        Map<String, DanhMucChiNoiTruResultDTO> danhMucChiNoiTruResultDTOMap = new HashMap<>();
+//
+//        for (DanhMucChiNoiTru danhMucChiNoiTru : danhMucChiNoiTruList) {
+//            DanhMucChiNoiTruResultDTO danhMucChiNoiTruResultDTO = DanhMucChiNoiTruResultDTO.builder()
+//                    .name(danhMucChiNoiTru.getName())
+//                    .code(danhMucChiNoiTru.getCode())
+//                    .amount(0L)
+//                    .usdAmount(BigDecimal.valueOf(0))
+//                    .eurAmount(BigDecimal.valueOf(0))
+//                    .build();
+//            danhMucChiNoiTruResultDTOMap.put(danhMucChiNoiTru.getName(), danhMucChiNoiTruResultDTO);
+//        }
 
-        for (DanhMucChiNoiTru danhMucChiNoiTru : danhMucChiNoiTruList) {
-            DanhMucChiNoiTruResultDTO danhMucChiNoiTruResultDTO = DanhMucChiNoiTruResultDTO.builder()
-                    .name(danhMucChiNoiTru.getName())
-                    .code(danhMucChiNoiTru.getCode())
-                    .amount(0L)
-                    .usdAmount(BigDecimal.valueOf(0))
-                    .eurAmount(BigDecimal.valueOf(0))
-                    .build();
-            danhMucChiNoiTruResultDTOMap.put(danhMucChiNoiTru.getName(), danhMucChiNoiTruResultDTO);
-        }
-
-        return danhMucChiNoiTruResultDTOMap;
     }
 
     public boolean checkExisting(String name, List<ChiNoiTru> chiNoiTruList) {

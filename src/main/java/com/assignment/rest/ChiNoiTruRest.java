@@ -1,6 +1,7 @@
 package com.assignment.rest;
 
 
+import com.assignment.dao.ChiNoiTruDAO;
 import com.assignment.service.ChiNoiTruService;
 
 import jakarta.inject.Inject;
@@ -18,10 +19,13 @@ public class ChiNoiTruRest {
     @Inject
     private ChiNoiTruService chiNoiTruService;
 
+    @Inject
+    ChiNoiTruDAO chiNoiTruDAO;
+
     @GET
     @Produces({MediaType.APPLICATION_JSON})
     public Response findAll() {
-        return Response.ok(chiNoiTruService.findAll()).build();
+        return Response.ok(chiNoiTruDAO.findAll()).build();
     }
 
     @GET
