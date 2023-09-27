@@ -85,6 +85,9 @@ public class ChiNoiTruService {
             DanhMucChiNoiTruResultDTO danhMucChiNoiTruResultDTO = DanhMucChiNoiTruResultDTO.builder()
                     .name(danhMucChiNoiTru.getName())
                     .code(danhMucChiNoiTru.getCode())
+                    .amount(0L)
+                    .usdAmount(BigDecimal.valueOf(0))
+                    .eurAmount(BigDecimal.valueOf(0))
                     .build();
             danhMucChiNoiTruResultDTOMap.put(danhMucChiNoiTru.getName(), danhMucChiNoiTruResultDTO);
         }
