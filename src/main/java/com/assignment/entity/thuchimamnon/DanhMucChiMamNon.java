@@ -1,5 +1,6 @@
 package com.assignment.entity.thuchimamnon;
 
+import io.quarkus.runtime.annotations.RegisterForReflection;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -13,6 +14,7 @@ import jakarta.validation.constraints.Size;
 @NoArgsConstructor
 @AllArgsConstructor
 @Table(name = "mntc_danhmuc_chimamnon")
+@RegisterForReflection
 public class DanhMucChiMamNon {
 	@Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

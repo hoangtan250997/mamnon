@@ -3,17 +3,15 @@ package com.assignment.model;
 import com.assignment.entity.congdoan.CongDoanResource;
 import com.assignment.entity.congdoan.CongdoanType;
 import com.assignment.entity.congdoan.Region;
+import io.quarkus.runtime.annotations.RegisterForReflection;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.EnumType;
-import jakarta.persistence.Enumerated;
 import java.time.LocalDateTime;
 import java.util.List;
-
+@RegisterForReflection(targets = {CongDoanDTO.class})
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
@@ -42,14 +40,9 @@ public class CongDoanDTO {
 
 	private List<CongDoanResource> congdoanResources;
 
-    @Column(name = "is_abroad", columnDefinition = "boolean default false")
     private boolean abroad;
 
-    @Column
-    @Enumerated(EnumType.STRING)
     private Region region;
 
-    @Column
-    @Enumerated(EnumType.STRING)
     private CongdoanType type;
 }

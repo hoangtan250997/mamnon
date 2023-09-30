@@ -3,29 +3,26 @@ package com.assignment.rest;
 
 import com.assignment.dao.ChiNoiTruDAO;
 import com.assignment.service.ChiNoiTruService;
-
+import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
-import jakarta.ws.rs.GET;
-import jakarta.ws.rs.Path;
-import jakarta.ws.rs.PathParam;
-import jakarta.ws.rs.Produces;
-import jakarta.ws.rs.QueryParam;
+import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
 
 @Path("/chi-noi-tru")
+@ApplicationScoped
 public class ChiNoiTruRest {
 
     @Inject
     private ChiNoiTruService chiNoiTruService;
 
     @Inject
-    ChiNoiTruDAO chiNoiTruDAO;
+    private ChiNoiTruDAO chiNoiTruDAO;
 
     @GET
     @Produces({MediaType.APPLICATION_JSON})
     public Response findAll() {
-        return Response.ok(chiNoiTruDAO.findAll()).build();
+        return Response.ok(chiNoiTruService.findAll()).build();
     }
 
     @GET

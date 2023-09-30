@@ -34,7 +34,6 @@ public class ChiNoiTruService {
 
     public List<ChiNoiTru> findAll() {
         return chiNoiTruDAO.findAll();
-
     }
 
 

@@ -8,7 +8,7 @@ import org.mapstruct.Mapping;
 import org.mapstruct.NullValuePropertyMappingStrategy;
 
 
-@Mapper(componentModel = "jakarta", nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
+@Mapper(componentModel = "jakarta")
 public interface ChiNoiTruMapper extends BaseMapper<ChiNoiTru, ChiNoiTruDTO> {
 
     @Override

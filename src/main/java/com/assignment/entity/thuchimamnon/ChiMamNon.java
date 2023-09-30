@@ -1,6 +1,7 @@
 package com.assignment.entity.thuchimamnon;
 
 import com.assignment.entity.congdoan.CongDoan;
+import io.quarkus.runtime.annotations.RegisterForReflection;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
@@ -15,6 +16,7 @@ import java.time.LocalDate;
 @NoArgsConstructor
 @AllArgsConstructor
 @Table(name = "mntc_chimamnon")
+@RegisterForReflection
 public class ChiMamNon {
 	@Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

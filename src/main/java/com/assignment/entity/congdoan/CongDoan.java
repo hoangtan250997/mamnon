@@ -1,6 +1,7 @@
 package com.assignment.entity.congdoan;
 
 import com.fasterxml.jackson.annotation.JsonManagedReference;
+import io.quarkus.runtime.annotations.RegisterForReflection;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -13,15 +14,13 @@ import org.hibernate.annotations.UpdateTimestamp;
 import jakarta.persistence.*;
 import java.time.LocalDateTime;
 import java.util.List;
-
+@RegisterForReflection
 @Builder
 @Entity
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-@EqualsAndHashCode(exclude = {"id","createdDate","updatedDate"})
 @Table(name = "cong_doan")
-
 public class CongDoan {
 
     @Id

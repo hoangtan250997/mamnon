@@ -3,7 +3,6 @@ package com.assignment.dao;
 
 import com.assignment.entity.noitru.ChiNoiTru;
 import jakarta.enterprise.context.ApplicationScoped;
-import jakarta.enterprise.context.RequestScoped;
 
 import java.util.List;
 @ApplicationScoped

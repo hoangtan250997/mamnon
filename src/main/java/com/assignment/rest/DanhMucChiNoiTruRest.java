@@ -17,6 +17,7 @@ public class DanhMucChiNoiTruRest {
     private DanhMucChiNoiTruDAO danhMucChiNoiTruDAO;
 
     @GET
+    @Path("/all")
     @Produces({MediaType.APPLICATION_JSON})
     public Response findAll() {
         return Response.ok(danhMucChiNoiTruDAO.findAll()).build();

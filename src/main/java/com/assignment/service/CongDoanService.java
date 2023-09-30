@@ -19,9 +19,9 @@ public class CongDoanService {
     @Inject
     CongDoanMapper congDoanMapper;
 
-    public List<CongDoanDTO> findAll() {
+    public List<CongDoan> findAll() {
         List<CongDoan> congDoanList = congDoanDAO.findAll();
-        return congDoanMapper.toDTOList(congDoanList);
+        return (congDoanList);
     }
 }
 

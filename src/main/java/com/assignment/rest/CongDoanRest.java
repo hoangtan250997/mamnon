@@ -1,6 +1,7 @@
 package com.assignment.rest;
 
 
+import com.assignment.mapper.CongDoanMapper;
 import com.assignment.service.CongDoanService;
 
 import jakarta.inject.Inject;
@@ -15,10 +16,11 @@ public class CongDoanRest {
 
     @Inject
     private CongDoanService congDoanService;
-
+    @Inject
+    CongDoanMapper congDoanMapper;
     @GET
     @Produces({MediaType.APPLICATION_JSON})
      public Response findAll() {
-        return Response.ok(congDoanService.findAll()).build();
+        return Response.ok(congDoanMapper.toDTOList(congDoanService.findAll())).build();
     }
 }
